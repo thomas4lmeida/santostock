@@ -6,6 +6,8 @@ import {
     CalendarDays,
     FolderGit2,
     LayoutGrid,
+    Tags,
+    Truck,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -23,6 +25,8 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as eventsIndex } from '@/routes/events';
+import { index as itemCategoriesIndex } from '@/routes/item-categories';
+import { index as suppliersIndex } from '@/routes/suppliers';
 import type { NavItem } from '@/types';
 
 const page = usePage<{ auth: { user: { role: string | null } | null } }>();
@@ -34,11 +38,23 @@ const mainNavItems = computed<NavItem[]>(() => {
     ];
 
     if (role.value === 'coordinator') {
-        items.push({
-            title: 'Eventos',
-            href: eventsIndex().url,
-            icon: CalendarDays,
-        });
+        items.push(
+            {
+                title: 'Eventos',
+                href: eventsIndex().url,
+                icon: CalendarDays,
+            },
+            {
+                title: 'Fornecedores',
+                href: suppliersIndex().url,
+                icon: Truck,
+            },
+            {
+                title: 'Categorias',
+                href: itemCategoriesIndex().url,
+                icon: Tags,
+            },
+        );
     }
 
     return items;

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\EventStatus;
 use App\Http\Requests\SaveEventRequest;
 use App\Models\Event;
+use App\Models\ItemCategory;
+use App\Models\Supplier;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -51,7 +53,23 @@ class EventController extends Controller
 
     public function show(Event $event): Response
     {
-        return Inertia::render('Events/Show', ['event' => $event]);
+        $event->load(['items.itemCategory', 'items.supplier']);
+
+        $itemGroups = $event->items
+            ->groupBy('item_category_id')
+            ->map(fn ($items) => [
+                'category' => $items->first()->itemCategory,
+                'items' => $items->values(),
+            ])
+            ->sortBy(fn ($group) => $group['category']->name)
+            ->values();
+
+        return Inertia::render('Events/Show', [
+            'event' => $event->only(['id', 'name', 'description', 'venue', 'starts_at', 'ends_at']),
+            'itemGroups' => $itemGroups,
+            'categories' => ItemCategory::orderBy('name')->get(['id', 'name']),
+            'suppliers' => Supplier::orderBy('name')->get(['id', 'name']),
+        ]);
     }
 
     public function edit(Event $event): Response

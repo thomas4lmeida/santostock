@@ -3,6 +3,7 @@ import { Head, Link, router } from '@inertiajs/vue3';
 import { onUnmounted, reactive, watch } from 'vue';
 import * as EventController from '@/actions/App/Http/Controllers/EventController';
 import { formatDateTimeBR } from '@/lib/format';
+import type { Paginated } from '@/types/pagination';
 
 interface Event {
     id: number;
@@ -10,11 +11,6 @@ interface Event {
     venue: string;
     starts_at: string;
     ends_at: string;
-}
-
-interface Paginated<T> {
-    data: T[];
-    links: { url: string | null; label: string; active: boolean }[];
 }
 
 const props = defineProps<{

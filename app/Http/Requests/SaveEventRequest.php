@@ -2,16 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\Role;
-use Illuminate\Foundation\Http\FormRequest;
-
-class SaveEventRequest extends FormRequest
+class SaveEventRequest extends CoordinatorRequest
 {
-    public function authorize(): bool
-    {
-        return $this->user()?->hasRole(Role::Coordinator->value) ?? false;
-    }
-
     /**
      * @return array<string, array<int, string>>
      */
