@@ -15,7 +15,9 @@ defineOptions({
     },
 });
 
-const page = usePage<{ auth: { user: { name: string; role: string | null } } }>();
+const page = usePage<{
+    auth: { user: { name: string; role: string | null } };
+}>();
 const role = computed(() => page.props.auth.user?.role ?? null);
 </script>
 
@@ -33,7 +35,8 @@ const role = computed(() => page.props.auth.user?.role ?? null);
             <template v-if="role === 'coordinator'">
                 <h2 class="text-lg font-semibold">Coordenador</h2>
                 <p class="text-sm text-muted-foreground">
-                    Gerencie eventos, fornecedores e atribua tarefas à sua equipe.
+                    Gerencie eventos, fornecedores e atribua tarefas à sua
+                    equipe.
                 </p>
             </template>
             <template v-else-if="role === 'staff'">
