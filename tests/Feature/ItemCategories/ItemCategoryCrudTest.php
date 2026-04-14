@@ -10,7 +10,7 @@ beforeEach(function () {
 });
 
 test('admin can create a category', function () {
-    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
+    $admin = User::factory()->withTwoFactor()->create()->assignRole(Role::Administrador->value);
 
     $response = $this->actingAs($admin)->post('/item-categories', [
         'name' => 'Mesas',
@@ -26,7 +26,7 @@ test('operador cannot create category', function () {
 });
 
 test('admin can update a category', function () {
-    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
+    $admin = User::factory()->withTwoFactor()->create()->assignRole(Role::Administrador->value);
     $category = ItemCategory::factory()->create(['name' => 'Antigo']);
 
     $this->actingAs($admin)->put("/item-categories/{$category->id}", [
@@ -37,7 +37,7 @@ test('admin can update a category', function () {
 });
 
 test('admin can delete a category', function () {
-    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
+    $admin = User::factory()->withTwoFactor()->create()->assignRole(Role::Administrador->value);
     $category = ItemCategory::factory()->create();
 
     $this->actingAs($admin)->delete("/item-categories/{$category->id}")
@@ -47,7 +47,7 @@ test('admin can delete a category', function () {
 });
 
 test('name is required', function () {
-    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
+    $admin = User::factory()->withTwoFactor()->create()->assignRole(Role::Administrador->value);
     $this->actingAs($admin)->post('/item-categories', ['name' => ''])
         ->assertSessionHasErrors('name');
 });

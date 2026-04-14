@@ -8,7 +8,7 @@ beforeEach(function () {
 });
 
 test('administrador can access an administrador-only route', function () {
-    $admin = User::factory()->create();
+    $admin = User::factory()->withTwoFactor()->create();
     $admin->assignRole('administrador');
 
     $this->actingAs($admin)

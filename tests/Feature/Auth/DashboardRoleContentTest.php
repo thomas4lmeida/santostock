@@ -8,7 +8,7 @@ beforeEach(function () {
 });
 
 test('dashboard exposes the user role to inertia for each role', function (string $role) {
-    $user = User::factory()->create(['email_verified_at' => now()]);
+    $user = User::factory()->withTwoFactor()->create(['email_verified_at' => now()]);
     $user->assignRole($role);
 
     $this->actingAs($user)

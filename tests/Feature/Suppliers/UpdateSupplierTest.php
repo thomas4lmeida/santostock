@@ -10,7 +10,7 @@ beforeEach(function () {
 });
 
 test('admin can update a supplier', function () {
-    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
+    $admin = User::factory()->withTwoFactor()->create()->assignRole(Role::Administrador->value);
     $supplier = Supplier::factory()->create(['name' => 'Antigo']);
 
     $response = $this->actingAs($admin)->put("/suppliers/{$supplier->id}", [
@@ -26,7 +26,7 @@ test('admin can update a supplier', function () {
 });
 
 test('admin can delete a supplier', function () {
-    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
+    $admin = User::factory()->withTwoFactor()->create()->assignRole(Role::Administrador->value);
     $supplier = Supplier::factory()->create();
 
     $this->actingAs($admin)->delete("/suppliers/{$supplier->id}")
@@ -36,14 +36,14 @@ test('admin can delete a supplier', function () {
 });
 
 test('name is required on create', function () {
-    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
+    $admin = User::factory()->withTwoFactor()->create()->assignRole(Role::Administrador->value);
 
     $this->actingAs($admin)->post('/suppliers', ['name' => ''])
         ->assertSessionHasErrors('name');
 });
 
 test('email must be valid', function () {
-    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
+    $admin = User::factory()->withTwoFactor()->create()->assignRole(Role::Administrador->value);
 
     $this->actingAs($admin)->post('/suppliers', [
         'name' => 'Teste',

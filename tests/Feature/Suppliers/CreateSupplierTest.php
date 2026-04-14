@@ -9,7 +9,7 @@ beforeEach(function () {
 });
 
 test('admin can create a supplier', function () {
-    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
+    $admin = User::factory()->withTwoFactor()->create()->assignRole(Role::Administrador->value);
 
     $response = $this->actingAs($admin)->post('/suppliers', [
         'name' => 'Fornecedor Alpha',
