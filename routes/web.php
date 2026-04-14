@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ItemCategories\ItemCategoryController;
+use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Suppliers\SupplierController;
 use App\Http\Controllers\Teams\TeamController;
 use App\Http\Controllers\Units\UnitController;
@@ -30,10 +31,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->parameters(['armazens' => 'warehouse'])
             ->names('warehouses')
             ->except(['index', 'show']);
+        Route::resource('produtos', ProductController::class)
+            ->parameters(['produtos' => 'product'])
+            ->names('products')
+            ->except(['index', 'show']);
     });
 
     Route::get('armazens', [WarehouseController::class, 'index'])->name('warehouses.index');
     Route::get('armazens/{warehouse}', [WarehouseController::class, 'show'])->name('warehouses.show');
+    Route::get('produtos', [ProductController::class, 'index'])->name('products.index');
+    Route::get('produtos/{product}', [ProductController::class, 'show'])->name('products.show');
 });
 
 require __DIR__.'/settings.php';
