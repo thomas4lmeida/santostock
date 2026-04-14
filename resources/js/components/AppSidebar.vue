@@ -24,9 +24,9 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { index as teamsIndex } from '@/routes/teams';
 import { index as itemCategoriesIndex } from '@/routes/item-categories';
 import { index as suppliersIndex } from '@/routes/suppliers';
+import { index as teamsIndex } from '@/routes/teams';
 import type { NavItem } from '@/types';
 
 const page = usePage<{ auth: { user: { role: string | null } | null } }>();

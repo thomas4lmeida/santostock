@@ -17,7 +17,9 @@ defineOptions({
 <template>
     <Head title="Painel" />
 
-    <div class="flex h-full flex-1 flex-col items-center justify-center gap-2 p-8 text-center">
+    <div
+        class="flex h-full flex-1 flex-col items-center justify-center gap-2 p-8 text-center"
+    >
         <h1 class="text-2xl font-semibold">Bem-vindo ao Santostok</h1>
         <p class="text-sm text-muted-foreground">
             O painel será preenchido com indicadores de estoque em breve.
