@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import { usePage } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import {
     BookOpen,
     FolderGit2,
@@ -9,6 +8,7 @@ import {
     Tags,
     Truck,
     Users,
+    Warehouse,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -29,6 +29,7 @@ import { index as itemCategoriesIndex } from '@/routes/item-categories';
 import { index as suppliersIndex } from '@/routes/suppliers';
 import { index as unitsIndex } from '@/routes/units';
 import { index as teamsIndex } from '@/routes/teams';
+import { index as warehousesIndex } from '@/routes/warehouses';
 import type { NavItem } from '@/types';
 
 const page = usePage<{ auth: { user: { role: string | null } | null } }>();
@@ -37,6 +38,7 @@ const role = computed(() => page.props.auth.user?.role ?? null);
 const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
         { title: 'Painel', href: dashboard(), icon: LayoutGrid },
+        { title: 'Armazéns', href: warehousesIndex().url, icon: Warehouse },
     ];
 
     if (role.value === 'administrador') {
