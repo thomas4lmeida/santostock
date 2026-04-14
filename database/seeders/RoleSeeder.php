@@ -22,7 +22,7 @@ class RoleSeeder extends Seeder
         Role::findByName(RoleEnum::Operador->value)
             ->syncPermissions(array_values(array_diff(
                 PermissionSeeder::PERMISSIONS,
-                ['receipts.correct', 'attachments.manage'],
+                ['admin.access', 'receipts.correct', 'attachments.manage'],
             )));
     }
 }

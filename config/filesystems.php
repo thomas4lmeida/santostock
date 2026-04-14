@@ -60,6 +60,18 @@ return [
             'report' => false,
         ],
 
+        'spaces' => [
+            'driver' => 's3',
+            'key' => env('SPACES_ACCESS_KEY_ID'),
+            'secret' => env('SPACES_SECRET_ACCESS_KEY'),
+            'region' => env('SPACES_REGION', 'us-east-1'),
+            'bucket' => env('SPACES_BUCKET', 'santostok-attachments'),
+            'endpoint' => env('SPACES_ENDPOINT', 'http://rustfs:7081'),
+            'use_path_style_endpoint' => env('SPACES_USE_PATH_STYLE_ENDPOINT', true),
+            'throw' => true,
+            'report' => true,
+        ],
+
     ],
 
     /*

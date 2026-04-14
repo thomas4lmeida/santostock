@@ -26,6 +26,7 @@ test('grants administrador role every Phase 5 permission', function () {
 
     expect($administrador->permissions->pluck('name')->sort()->values()->all())
         ->toBe([
+            'admin.access',
             'attachments.manage',
             'attachments.view',
             'orders.view',

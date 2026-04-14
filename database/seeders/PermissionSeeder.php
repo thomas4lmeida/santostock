@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Permission;
 class PermissionSeeder extends Seeder
 {
     public const PERMISSIONS = [
+        'admin.access',
         'orders.view',
         'receipts.create',
         'receipts.view',
