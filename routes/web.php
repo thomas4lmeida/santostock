@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Attachments\AttachmentViewController;
 use App\Http\Controllers\ItemCategories\ItemCategoryController;
 use App\Http\Controllers\Orders\CancelOrderController;
 use App\Http\Controllers\Orders\CloseShortOrderController;
@@ -53,6 +54,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('armazens/{warehouse}', [WarehouseController::class, 'show'])->name('warehouses.show');
     Route::get('produtos', [ProductController::class, 'index'])->name('products.index');
     Route::get('produtos/{product}', [ProductController::class, 'show'])->name('products.show');
+
+    Route::get('attachments/{attachment}/thumbnail', [AttachmentViewController::class, 'thumbnail'])
+        ->name('attachments.thumbnail')
+        ->withTrashed();
+    Route::get('attachments/{attachment}/original', [AttachmentViewController::class, 'original'])
+        ->name('attachments.original')
+        ->withTrashed();
 });
 
 require __DIR__.'/settings.php';
