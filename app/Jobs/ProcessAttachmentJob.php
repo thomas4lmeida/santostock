@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\Attachment;
-use App\Services\AttachmentUploader;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,7 +29,7 @@ class ProcessAttachmentJob implements ShouldQueue
     public function handle(): void
     {
         $attachment = Attachment::findOrFail($this->attachmentId);
-        $disk = Storage::disk(AttachmentUploader::DISK);
+        $disk = Storage::disk(config('santostok.attachments.disk'));
         $rawPath = $attachment->path;
 
         $rawBytes = $disk->get($rawPath);

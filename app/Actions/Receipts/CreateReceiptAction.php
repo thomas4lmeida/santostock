@@ -29,10 +29,13 @@ class CreateReceiptAction
             $input['photos'],
         );
 
-        $receipt = DB::transaction(function () use ($input, $user, $uploaded) {
+        $warehouseId = (int) $input['warehouse_id'];
+        $quantity = (int) $input['quantity'];
+
+        $receipt = DB::transaction(function () use ($input, $user, $uploaded, $warehouseId, $quantity) {
             $order = Order::lockForUpdate()->findOrFail($input['order_id']);
 
-            if ($order->warehouse_id && $order->warehouse_id !== $input['warehouse_id']) {
+            if ($order->warehouse_id && $order->warehouse_id !== $warehouseId) {
                 throw ValidationException::withMessages([
                     'warehouse_id' => 'Pedido já vinculado a outro armazém.',
                 ]);
@@ -46,36 +49,36 @@ class CreateReceiptAction
             }
 
             $saldo = $order->ordered_quantity - Receipt::where('order_id', $order->id)->sum('quantity');
-            if ($input['quantity'] > $saldo) {
+            if ($quantity > $saldo) {
                 throw ValidationException::withMessages([
                     'quantity' => 'Quantidade excede o saldo.',
                 ]);
             }
 
             if (! $order->warehouse_id) {
-                $order->update(['warehouse_id' => $input['warehouse_id']]);
+                $order->update(['warehouse_id' => $warehouseId]);
             }
 
             $receipt = Receipt::create([
                 'order_id' => $order->id,
-                'warehouse_id' => $input['warehouse_id'],
+                'warehouse_id' => $warehouseId,
                 'user_id' => $user->id,
-                'quantity' => $input['quantity'],
+                'quantity' => $quantity,
                 'idempotency_key' => $input['idempotency_key'],
             ]);
 
             $lot = StockLot::create([
                 'product_id' => $order->product_id,
-                'warehouse_id' => $input['warehouse_id'],
+                'warehouse_id' => $warehouseId,
                 'receipt_id' => $receipt->id,
             ]);
 
             StockMovement::create([
                 'stock_lot_id' => $lot->id,
-                'warehouse_id' => $input['warehouse_id'],
+                'warehouse_id' => $warehouseId,
                 'user_id' => $user->id,
                 'type' => StockMovement::TYPE_RECEIPT,
-                'quantity' => $input['quantity'],
+                'quantity' => $quantity,
                 'idempotency_key' => $input['idempotency_key'],
             ]);
 

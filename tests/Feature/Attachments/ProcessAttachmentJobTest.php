@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Storage;
 uses(RefreshDatabase::class);
 
 test('processes a raw blob into final original + thumbnail and deletes the raw blob', function () {
-    Storage::fake('spaces');
-    $disk = Storage::disk('spaces');
+    Storage::fake(config('santostok.attachments.disk'));
+    $disk = Storage::disk(config('santostok.attachments.disk'));
 
     $uploader = new AttachmentUploader;
     $meta = $uploader->upload(UploadedFile::fake()->image('photo.jpg', 800, 600));

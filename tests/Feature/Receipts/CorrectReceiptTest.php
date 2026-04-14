@@ -17,7 +17,7 @@ uses(RefreshDatabase::class);
 
 beforeEach(function () {
     $this->seed(RoleSeeder::class);
-    Storage::fake('spaces');
+    Storage::fake(config('santostok.attachments.disk'));
     Queue::fake();
 });
 

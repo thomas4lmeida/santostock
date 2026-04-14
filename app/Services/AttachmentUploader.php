@@ -5,11 +5,10 @@ namespace App\Services;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 class AttachmentUploader
 {
-    public const DISK = 'spaces';
-
     public const RAW_DIRECTORY = 'attachments/raw';
 
     /**
@@ -28,7 +27,11 @@ class AttachmentUploader
 
         $contents = file_get_contents($file->getRealPath());
 
-        Storage::disk(self::DISK)->put($path, $contents);
+        $disk = config('santostok.attachments.disk');
+
+        if (! Storage::disk($disk)->put($path, $contents)) {
+            throw new RuntimeException("Falha ao enviar anexo para o disco [{$disk}].");
+        }
 
         return [
             'uuid' => $uuid,

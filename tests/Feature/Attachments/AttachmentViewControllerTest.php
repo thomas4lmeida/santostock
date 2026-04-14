@@ -10,22 +10,24 @@ uses(RefreshDatabase::class);
 
 beforeEach(function () {
     $this->seed(RoleSeeder::class);
-    Storage::fake('spaces');
+    Storage::fake(config('santostok.attachments.disk'));
 });
 
-test('user with attachments.view permission is redirected to a signed thumbnail URL', function () {
+test('user with attachments.view permission streams thumbnail bytes', function () {
     $user = User::factory()->create();
     $user->givePermissionTo('attachments.view');
 
     $attachment = Attachment::factory()->create([
         'thumbnail_path' => 'attachments/test-thumb.jpg',
+        'mime' => 'image/jpeg',
     ]);
-    Storage::disk('spaces')->put($attachment->thumbnail_path, 'fake-jpeg-bytes');
+    Storage::disk(config('santostok.attachments.disk'))->put($attachment->thumbnail_path, 'fake-jpeg-bytes');
 
     $response = $this->actingAs($user)->get("/attachments/{$attachment->id}/thumbnail");
 
-    $response->assertRedirect();
-    expect($response->headers->get('Location'))->toContain('test-thumb.jpg');
+    $response->assertOk();
+    $response->assertHeader('Content-Type', 'image/jpeg');
+    expect($response->streamedContent())->toBe('fake-jpeg-bytes');
 });
 
 test('user without attachments.view permission gets 403', function () {
@@ -57,10 +59,21 @@ test('soft-deleted attachment is viewable by users with attachments.manage', fun
     $attachment = Attachment::factory()->create([
         'thumbnail_path' => 'attachments/managed-thumb.jpg',
     ]);
-    Storage::disk('spaces')->put($attachment->thumbnail_path, 'bytes');
+    Storage::disk(config('santostok.attachments.disk'))->put($attachment->thumbnail_path, 'bytes');
     $attachment->delete();
 
-    $response = $this->actingAs($user)->get("/attachments/{$attachment->id}/thumbnail");
+    $this->actingAs($user)->get("/attachments/{$attachment->id}/thumbnail")->assertOk();
+});
 
-    $response->assertRedirect();
+test('returns 404 when the underlying file is missing on disk', function () {
+    $user = User::factory()->create();
+    $user->givePermissionTo('attachments.view');
+
+    $attachment = Attachment::factory()->create([
+        'thumbnail_path' => 'attachments/missing-thumb.jpg',
+    ]);
+
+    $this->actingAs($user)
+        ->get("/attachments/{$attachment->id}/thumbnail")
+        ->assertNotFound();
 });

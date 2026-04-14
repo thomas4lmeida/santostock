@@ -20,7 +20,7 @@ uses(RefreshDatabase::class);
 
 beforeEach(function () {
     $this->seed(RoleSeeder::class);
-    Storage::fake('spaces');
+    Storage::fake(config('santostok.attachments.disk'));
     Queue::fake();
 });
 
@@ -136,6 +136,32 @@ test('warehouse lock — second receipt with different warehouse is rejected', f
         ->assertSessionHasErrors('warehouse_id');
 
     expect(Receipt::count())->toBe(1);
+});
+
+test('multiple receipts on the same warehouse are allowed', function () {
+    $user = User::factory()->create();
+    $user->givePermissionTo('receipts.create');
+
+    $order = Order::factory()->create(['ordered_quantity' => 10, 'status' => OrderStatus::Open]);
+    $warehouse = Warehouse::factory()->create();
+
+    // IDs sent as strings to mimic multipart/form-data (forceFormData on file uploads).
+    $payload = fn () => [
+        'warehouse_id' => (string) $warehouse->id,
+        'quantity' => '3',
+        'idempotency_key' => Str::uuid()->toString(),
+        'photos' => [UploadedFile::fake()->image('p.jpg')],
+    ];
+
+    $this->actingAs($user)->post("/pedidos/{$order->id}/recebimentos", $payload())->assertRedirect();
+    $this->actingAs($user)
+        ->from("/pedidos/{$order->id}")
+        ->post("/pedidos/{$order->id}/recebimentos", $payload())
+        ->assertRedirect()
+        ->assertSessionHasNoErrors();
+
+    expect(Receipt::count())->toBe(2)
+        ->and($order->fresh()->status)->toBe(OrderStatus::PartiallyReceived);
 });
 
 test('user without receipts.create gets 403', function () {
