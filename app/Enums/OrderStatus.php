@@ -37,4 +37,22 @@ enum OrderStatus: string
     {
         return in_array($next, $this->nextAllowed(), strict: true);
     }
+
+    /**
+     * @return array<int, OrderStatus>
+     */
+    public function rewindTargets(): array
+    {
+        return match ($this) {
+            self::FullyReceived => [self::PartiallyReceived, self::Open],
+            self::PartiallyReceived => [self::Open],
+            self::ClosedShort => [self::PartiallyReceived, self::Open],
+            self::Open, self::Cancelled => [],
+        };
+    }
+
+    public function canRewindTo(self $next): bool
+    {
+        return in_array($next, $this->rewindTargets(), strict: true);
+    }
 }

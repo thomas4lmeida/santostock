@@ -6,6 +6,7 @@ use App\Http\Controllers\Orders\CancelOrderController;
 use App\Http\Controllers\Orders\CloseShortOrderController;
 use App\Http\Controllers\Orders\OrderController;
 use App\Http\Controllers\Products\ProductController;
+use App\Http\Controllers\Receipts\CorrectReceiptController;
 use App\Http\Controllers\Receipts\ReceiptController;
 use App\Http\Controllers\Suppliers\SupplierController;
 use App\Http\Controllers\Teams\TeamController;
@@ -58,6 +59,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('pedidos/{order}/recebimentos', [ReceiptController::class, 'store'])
         ->name('orders.receipts.store');
+    Route::post('recebimentos/{receipt}/corrigir', CorrectReceiptController::class)
+        ->name('receipts.correct');
 
     Route::get('attachments/{attachment}/thumbnail', [AttachmentViewController::class, 'thumbnail'])
         ->name('attachments.thumbnail')
