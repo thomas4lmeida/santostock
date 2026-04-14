@@ -7,33 +7,24 @@ beforeEach(function () {
     $this->seed(RoleSeeder::class);
 });
 
-test('coordinator can access a coordinator-only route', function () {
-    $coordinator = User::factory()->create();
-    $coordinator->assignRole('coordinator');
+test('administrador can access an administrador-only route', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('administrador');
 
-    $this->actingAs($coordinator)
+    $this->actingAs($admin)
         ->get('/suppliers')
         ->assertOk();
 });
 
-test('staff is forbidden from a coordinator-only route', function () {
-    $staff = User::factory()->create();
-    $staff->assignRole('staff');
+test('operador is forbidden from an administrador-only route', function () {
+    $operador = User::factory()->create();
+    $operador->assignRole('operador');
 
-    $this->actingAs($staff)
+    $this->actingAs($operador)
         ->get('/suppliers')
         ->assertForbidden();
 });
 
-test('client is forbidden from a coordinator-only route', function () {
-    $client = User::factory()->create();
-    $client->assignRole('client');
-
-    $this->actingAs($client)
-        ->get('/suppliers')
-        ->assertForbidden();
-});
-
-test('guest is redirected to login from a coordinator-only route', function () {
+test('guest is redirected to login from an administrador-only route', function () {
     $this->get('/suppliers')->assertRedirect('/login');
 });

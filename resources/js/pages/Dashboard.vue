@@ -32,29 +32,22 @@ const role = computed(() => page.props.auth.user?.role ?? null);
             :data-role="role"
             class="rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border"
         >
-            <template v-if="role === 'coordinator'">
-                <h2 class="text-lg font-semibold">Coordenador</h2>
+            <template v-if="role === 'administrador'">
+                <h2 class="text-lg font-semibold">Administrador</h2>
                 <p class="text-sm text-muted-foreground">
-                    Gerencie eventos, fornecedores e atribua tarefas à sua
-                    equipe.
+                    Gerencie fornecedores, categorias e o catálogo do estoque.
                 </p>
             </template>
-            <template v-else-if="role === 'staff'">
-                <h2 class="text-lg font-semibold">Equipe</h2>
+            <template v-else-if="role === 'operador'">
+                <h2 class="text-lg font-semibold">Operador</h2>
                 <p class="text-sm text-muted-foreground">
-                    Suas tarefas atribuídas e o pool de tarefas em aberto.
-                </p>
-            </template>
-            <template v-else-if="role === 'client'">
-                <h2 class="text-lg font-semibold">Cliente</h2>
-                <p class="text-sm text-muted-foreground">
-                    Acompanhe o status de entrega dos itens dos seus eventos.
+                    Registre movimentações de entrada e saída do estoque.
                 </p>
             </template>
             <template v-else>
                 <h2 class="text-lg font-semibold">Bem-vindo</h2>
                 <p class="text-sm text-muted-foreground">
-                    Nenhum perfil atribuído. Fale com o coordenador.
+                    Nenhum perfil atribuído. Fale com o administrador.
                 </p>
             </template>
         </section>

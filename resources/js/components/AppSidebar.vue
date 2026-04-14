@@ -35,7 +35,7 @@ const mainNavItems = computed<NavItem[]>(() => {
         { title: 'Painel', href: dashboard(), icon: LayoutGrid },
     ];
 
-    if (role.value === 'coordinator') {
+    if (role.value === 'administrador') {
         items.push(
             {
                 title: 'Fornecedores',

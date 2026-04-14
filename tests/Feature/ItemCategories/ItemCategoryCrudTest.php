@@ -9,10 +9,10 @@ beforeEach(function () {
     $this->seed(RoleSeeder::class);
 });
 
-test('coordinator can create a category', function () {
-    $coordinator = User::factory()->create()->assignRole(Role::Coordinator->value);
+test('admin can create a category', function () {
+    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
 
-    $response = $this->actingAs($coordinator)->post('/item-categories', [
+    $response = $this->actingAs($admin)->post('/item-categories', [
         'name' => 'Mesas',
     ]);
 
@@ -20,35 +20,35 @@ test('coordinator can create a category', function () {
     $this->assertDatabaseHas('item_categories', ['name' => 'Mesas']);
 });
 
-test('staff cannot create category', function () {
-    $staff = User::factory()->create()->assignRole(Role::Staff->value);
-    $this->actingAs($staff)->post('/item-categories', ['name' => 'X'])->assertForbidden();
+test('operador cannot create category', function () {
+    $operador = User::factory()->create()->assignRole(Role::Operador->value);
+    $this->actingAs($operador)->post('/item-categories', ['name' => 'X'])->assertForbidden();
 });
 
-test('coordinator can update a category', function () {
-    $coordinator = User::factory()->create()->assignRole(Role::Coordinator->value);
+test('admin can update a category', function () {
+    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
     $category = ItemCategory::factory()->create(['name' => 'Antigo']);
 
-    $this->actingAs($coordinator)->put("/item-categories/{$category->id}", [
+    $this->actingAs($admin)->put("/item-categories/{$category->id}", [
         'name' => 'Novo',
     ])->assertRedirect('/item-categories');
 
     expect($category->fresh()->name)->toBe('Novo');
 });
 
-test('coordinator can delete a category', function () {
-    $coordinator = User::factory()->create()->assignRole(Role::Coordinator->value);
+test('admin can delete a category', function () {
+    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
     $category = ItemCategory::factory()->create();
 
-    $this->actingAs($coordinator)->delete("/item-categories/{$category->id}")
+    $this->actingAs($admin)->delete("/item-categories/{$category->id}")
         ->assertRedirect('/item-categories');
 
     $this->assertDatabaseMissing('item_categories', ['id' => $category->id]);
 });
 
 test('name is required', function () {
-    $coordinator = User::factory()->create()->assignRole(Role::Coordinator->value);
-    $this->actingAs($coordinator)->post('/item-categories', ['name' => ''])
+    $admin = User::factory()->create()->assignRole(Role::Administrador->value);
+    $this->actingAs($admin)->post('/item-categories', ['name' => ''])
         ->assertSessionHasErrors('name');
 });
 

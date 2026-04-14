@@ -12,7 +12,7 @@ Route::inertia('/', 'Welcome', [
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 
-    Route::middleware('role:coordinator')->group(function () {
+    Route::middleware('role:administrador')->group(function () {
         Route::resource('suppliers', SupplierController::class);
         Route::resource('item-categories', ItemCategoryController::class)
             ->except(['show'])

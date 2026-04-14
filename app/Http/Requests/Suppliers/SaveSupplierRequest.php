@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Suppliers;
 
-use App\Http\Requests\CoordinatorRequest;
+use App\Http\Requests\AdministradorRequest;
 
-class SaveSupplierRequest extends CoordinatorRequest
+class SaveSupplierRequest extends AdministradorRequest
 {
     /**
      * @return array<string, array<int, string>>

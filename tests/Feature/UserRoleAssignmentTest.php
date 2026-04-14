@@ -7,7 +7,7 @@ test('a user can be assigned a role', function () {
     $this->seed(RoleSeeder::class);
     $user = User::factory()->create();
 
-    $user->assignRole('coordinator');
+    $user->assignRole('administrador');
 
-    expect($user->hasRole('coordinator'))->toBeTrue();
+    expect($user->hasRole('administrador'))->toBeTrue();
 });

@@ -17,4 +17,4 @@ test('dashboard exposes the user role to inertia for each role', function (strin
         ->assertInertia(fn ($page) => $page
             ->where('auth.user.role', $role)
         );
-})->with(['coordinator', 'staff', 'client']);
+})->with(['administrador', 'operador']);
