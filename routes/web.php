@@ -3,6 +3,7 @@
 use App\Http\Controllers\ItemCategories\ItemCategoryController;
 use App\Http\Controllers\Suppliers\SupplierController;
 use App\Http\Controllers\Teams\TeamController;
+use App\Http\Controllers\Units\UnitController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -21,6 +22,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('equipes', TeamController::class)
             ->parameters(['equipes' => 'team'])
             ->names('teams');
+        Route::resource('unidades', UnitController::class)
+            ->parameters(['unidades' => 'unit'])
+            ->names('units');
     });
 });
 
