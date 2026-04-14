@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\EnsureAdminHasTwoFactor;
 use App\Http\Middleware\EnsureUserActive;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -26,7 +25,6 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
             EnsureUserActive::class,
-            EnsureAdminHasTwoFactor::class,
         ]);
 
         $middleware->alias([
