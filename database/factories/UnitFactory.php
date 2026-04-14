@@ -17,19 +17,9 @@ class UnitFactory extends Factory
      */
     public function definition(): array
     {
-        $units = [
-            'Unidade' => 'un',
-            'Quilograma' => 'kg',
-            'Metro' => 'm',
-            'Par' => 'par',
-            'Litro' => 'L',
-        ];
-
-        $name = $this->faker->unique()->randomElement(array_keys($units));
-
         return [
-            'name' => $name,
-            'abbreviation' => $units[$name],
+            'name' => 'Unidade '.$this->faker->unique()->words(2, true),
+            'abbreviation' => $this->faker->lexify('???'),
         ];
     }
 }
