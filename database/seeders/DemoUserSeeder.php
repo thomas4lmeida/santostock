@@ -9,28 +9,34 @@ use Illuminate\Support\Facades\Hash;
 
 class DemoUserSeeder extends Seeder
 {
-    /**
-     * Display names per role (pt-BR).
-     */
-    private const NAMES = [
-        'coordinator' => 'Coordenador Demo',
-        'staff' => 'Equipe Demo',
-        'client' => 'Cliente Demo',
-    ];
-
     public function run(): void
     {
-        foreach (Role::cases() as $role) {
+        if (app()->environment('production')) {
+            return;
+        }
+
+        $users = [
+            Role::Administrador->value => [
+                'name' => 'Administrador Demo',
+                'password' => env('DEMO_ADMIN_PASSWORD', 'password'),
+            ],
+            Role::Operador->value => [
+                'name' => 'Operador Demo',
+                'password' => env('DEMO_OPERADOR_PASSWORD', 'password'),
+            ],
+        ];
+
+        foreach ($users as $roleName => $attrs) {
             $user = User::firstOrCreate(
-                ['email' => "{$role->value}@santostok.test"],
+                ['email' => "{$roleName}@santostok.test"],
                 [
-                    'name' => self::NAMES[$role->value],
-                    'password' => Hash::make('password'),
+                    'name' => $attrs['name'],
+                    'password' => Hash::make($attrs['password']),
                     'email_verified_at' => now(),
                 ],
             );
 
-            $user->syncRoles([$role->value]);
+            $user->syncRoles([$roleName]);
         }
     }
 }

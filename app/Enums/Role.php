@@ -4,9 +4,16 @@ namespace App\Enums;
 
 enum Role: string
 {
-    case Coordinator = 'coordinator';
-    case Staff = 'staff';
-    case Client = 'client';
+    case Administrador = 'administrador';
+    case Operador = 'operador';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::Administrador => 'Administrador',
+            self::Operador => 'Operador',
+        };
+    }
 
     /**
      * @return array<int, string>

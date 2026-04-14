@@ -8,10 +8,10 @@ beforeEach(function () {
     $this->seed(RoleSeeder::class);
 });
 
-test('coordinator can create a supplier', function () {
-    $coordinator = User::factory()->create()->assignRole(Role::Coordinator->value);
+test('admin can create a supplier', function () {
+    $admin = User::factory()->withTwoFactor()->create()->assignRole(Role::Administrador->value);
 
-    $response = $this->actingAs($coordinator)->post('/suppliers', [
+    $response = $this->actingAs($admin)->post('/suppliers', [
         'name' => 'Fornecedor Alpha',
         'contact_name' => 'João Silva',
         'phone' => '11999998888',
@@ -26,9 +26,9 @@ test('coordinator can create a supplier', function () {
     ]);
 });
 
-test('staff cannot create supplier', function () {
-    $staff = User::factory()->create()->assignRole(Role::Staff->value);
-    $this->actingAs($staff)->post('/suppliers', ['name' => 'X'])->assertForbidden();
+test('operador cannot create supplier', function () {
+    $operador = User::factory()->create()->assignRole(Role::Operador->value);
+    $this->actingAs($operador)->post('/suppliers', ['name' => 'X'])->assertForbidden();
 });
 
 test('guest is redirected to login', function () {

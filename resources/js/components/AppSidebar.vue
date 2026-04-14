@@ -3,7 +3,6 @@ import { Link } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
 import {
     BookOpen,
-    CalendarDays,
     FolderGit2,
     LayoutGrid,
     Tags,
@@ -24,7 +23,6 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { index as eventsIndex } from '@/routes/events';
 import { index as itemCategoriesIndex } from '@/routes/item-categories';
 import { index as suppliersIndex } from '@/routes/suppliers';
 import type { NavItem } from '@/types';
@@ -37,13 +35,8 @@ const mainNavItems = computed<NavItem[]>(() => {
         { title: 'Painel', href: dashboard(), icon: LayoutGrid },
     ];
 
-    if (role.value === 'coordinator') {
+    if (role.value === 'administrador') {
         items.push(
-            {
-                title: 'Eventos',
-                href: eventsIndex().url,
-                icon: CalendarDays,
-            },
             {
                 title: 'Fornecedores',
                 href: suppliersIndex().url,
