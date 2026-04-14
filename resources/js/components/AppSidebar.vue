@@ -7,6 +7,7 @@ import {
     LayoutGrid,
     Tags,
     Truck,
+    Users,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -25,6 +26,7 @@ import {
 import { dashboard } from '@/routes';
 import { index as itemCategoriesIndex } from '@/routes/item-categories';
 import { index as suppliersIndex } from '@/routes/suppliers';
+import { index as teamsIndex } from '@/routes/teams';
 import type { NavItem } from '@/types';
 
 const page = usePage<{ auth: { user: { role: string | null } | null } }>();
@@ -41,6 +43,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Fornecedores',
                 href: suppliersIndex().url,
                 icon: Truck,
+            },
+            {
+                title: 'Equipes',
+                href: teamsIndex().url,
+                icon: Users,
             },
             {
                 title: 'Categorias',

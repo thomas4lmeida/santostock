@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ItemCategories\ItemCategoryController;
 use App\Http\Controllers\Suppliers\SupplierController;
+use App\Http\Controllers\Teams\TeamController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -17,6 +18,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('item-categories', ItemCategoryController::class)
             ->except(['show'])
             ->parameter('item-categories', 'itemCategory');
+        Route::resource('equipes', TeamController::class)
+            ->parameters(['equipes' => 'team'])
+            ->names('teams');
     });
 });
 
