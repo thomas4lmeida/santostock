@@ -23,7 +23,7 @@ const props = defineProps<{
 
 const form = useForm({
     name: props.team?.name ?? '',
-    description: props.team?.description ?? '',
+    description: props.team?.description ?? null,
     user_ids: [...props.attachedUserIds],
 });
 

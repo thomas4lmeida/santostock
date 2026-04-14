@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import * as TeamController from '@/actions/App/Http/Controllers/Teams/TeamController';
 import type { Paginated } from '@/types/pagination';
 
@@ -18,14 +18,12 @@ defineOptions({
     },
 });
 
-const deleteForm = useForm({});
-
 function destroy(team: Team) {
     if (!confirm('Excluir esta equipe?')) {
         return;
     }
 
-    deleteForm.delete(TeamController.destroy.url({ team: team.id }));
+    router.delete(TeamController.destroy.url({ team: team.id }));
 }
 </script>
 
