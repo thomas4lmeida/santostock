@@ -58,6 +58,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('produtos', [ProductController::class, 'index'])->name('products.index');
     Route::get('produtos/{product}', [ProductController::class, 'show'])->name('products.show');
 
+    Route::get('pedidos/{order}/recebimentos/create', [ReceiptController::class, 'create'])
+        ->name('orders.receipts.create');
     Route::post('pedidos/{order}/recebimentos', [ReceiptController::class, 'store'])
         ->name('orders.receipts.store');
     Route::post('recebimentos/{receipt}/corrigir', CorrectReceiptController::class)
