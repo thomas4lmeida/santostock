@@ -6,6 +6,7 @@ use App\Http\Controllers\Orders\CancelOrderController;
 use App\Http\Controllers\Orders\CloseShortOrderController;
 use App\Http\Controllers\Orders\OrderController;
 use App\Http\Controllers\Products\ProductController;
+use App\Http\Controllers\Receipts\ReceiptController;
 use App\Http\Controllers\Suppliers\SupplierController;
 use App\Http\Controllers\Teams\TeamController;
 use App\Http\Controllers\Units\UnitController;
@@ -54,6 +55,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('armazens/{warehouse}', [WarehouseController::class, 'show'])->name('warehouses.show');
     Route::get('produtos', [ProductController::class, 'index'])->name('products.index');
     Route::get('produtos/{product}', [ProductController::class, 'show'])->name('products.show');
+
+    Route::post('pedidos/{order}/recebimentos', [ReceiptController::class, 'store'])
+        ->name('orders.receipts.store');
 
     Route::get('attachments/{attachment}/thumbnail', [AttachmentViewController::class, 'thumbnail'])
         ->name('attachments.thumbnail')

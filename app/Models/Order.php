@@ -19,11 +19,17 @@ class Order extends Model
     protected $fillable = [
         'supplier_id',
         'product_id',
+        'warehouse_id',
         'ordered_quantity',
         'status',
         'notes',
         'created_by_user_id',
     ];
+
+    public function warehouse(): BelongsTo
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
 
     public function supplier(): BelongsTo
     {
