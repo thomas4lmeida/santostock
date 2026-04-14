@@ -12,7 +12,7 @@ test('coordinator can access a coordinator-only route', function () {
     $coordinator->assignRole('coordinator');
 
     $this->actingAs($coordinator)
-        ->get('/events')
+        ->get('/suppliers')
         ->assertOk();
 });
 
@@ -21,7 +21,7 @@ test('staff is forbidden from a coordinator-only route', function () {
     $staff->assignRole('staff');
 
     $this->actingAs($staff)
-        ->get('/events')
+        ->get('/suppliers')
         ->assertForbidden();
 });
 
@@ -30,10 +30,10 @@ test('client is forbidden from a coordinator-only route', function () {
     $client->assignRole('client');
 
     $this->actingAs($client)
-        ->get('/events')
+        ->get('/suppliers')
         ->assertForbidden();
 });
 
 test('guest is redirected to login from a coordinator-only route', function () {
-    $this->get('/events')->assertRedirect('/login');
+    $this->get('/suppliers')->assertRedirect('/login');
 });

@@ -1,6 +1,6 @@
 # PRD: Santostok — Inventory & Warehouse Management (Pivot)
 
-> **Context for this plan:** This file is the draft of the **revised Santostok PRD** produced under plan mode. After approval it will be moved to `docs/PRD.md` (replacing the original event-rental PRD) and submitted as a GitHub issue. The current `docs/PRD.md` (event-rental scope) is superseded by this document.
+> **Phased implementation plan:** see [`docs/plans/2026-04-13-05-plan-pivot-inventory-warehouse.md`](plans/2026-04-13-05-plan-pivot-inventory-warehouse.md). This PRD supersedes the original event-rental PRD.
 
 ---
 
