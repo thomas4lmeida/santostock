@@ -14,15 +14,22 @@ interface OrderValues {
     notes: string | null;
 }
 
-const props = defineProps<{
-    initial?: Partial<OrderValues>;
-    suppliers: Option[];
-    products: Option[];
-    canEditQuantity?: boolean;
-    submitUrl: string;
-    method: 'post' | 'put';
-    submitLabel: string;
-}>();
+const props = withDefaults(
+    defineProps<{
+        initial?: Partial<OrderValues>;
+        suppliers: Option[];
+        products: Option[];
+        canEditQuantity?: boolean;
+        submitUrl: string;
+        method: 'post' | 'put';
+        submitLabel: string;
+    }>(),
+    {
+        // Vue coerces absent boolean props to false; default to true so
+        // pages that omit this prop (Create) keep the field editable.
+        canEditQuantity: true,
+    },
+);
 
 const form = useForm({
     supplier_id: props.initial?.supplier_id ?? null,
@@ -77,11 +84,11 @@ function submit() {
                 v-model.number="form.ordered_quantity"
                 type="number"
                 min="1"
-                :disabled="canEditQuantity === false"
+                :disabled="!canEditQuantity"
                 class="rounded-md border border-input bg-background px-3 py-2 text-sm disabled:opacity-60"
                 required
             />
-            <p v-if="canEditQuantity === false" class="text-xs text-muted-foreground">
+            <p v-if="!canEditQuantity" class="text-xs text-muted-foreground">
                 Quantidade bloqueada: existem recebimentos registrados.
             </p>
             <p v-if="form.errors.ordered_quantity" class="text-xs text-destructive">
