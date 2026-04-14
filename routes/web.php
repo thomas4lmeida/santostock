@@ -4,6 +4,7 @@ use App\Http\Controllers\ItemCategories\ItemCategoryController;
 use App\Http\Controllers\Suppliers\SupplierController;
 use App\Http\Controllers\Teams\TeamController;
 use App\Http\Controllers\Units\UnitController;
+use App\Http\Controllers\Warehouses\WarehouseController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -25,7 +26,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('unidades', UnitController::class)
             ->parameters(['unidades' => 'unit'])
             ->names('units');
+        Route::resource('armazens', WarehouseController::class)
+            ->parameters(['armazens' => 'warehouse'])
+            ->names('warehouses')
+            ->except(['index', 'show']);
     });
+
+    Route::get('armazens', [WarehouseController::class, 'index'])->name('warehouses.index');
+    Route::get('armazens/{warehouse}', [WarehouseController::class, 'show'])->name('warehouses.show');
 });
 
 require __DIR__.'/settings.php';
