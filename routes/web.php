@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ItemCategories\ItemCategoryController;
+use App\Http\Controllers\Orders\CancelOrderController;
+use App\Http\Controllers\Orders\CloseShortOrderController;
+use App\Http\Controllers\Orders\OrderController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Suppliers\SupplierController;
 use App\Http\Controllers\Teams\TeamController;
@@ -35,7 +38,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->parameters(['produtos' => 'product'])
             ->names('products')
             ->except(['index', 'show']);
+        Route::resource('pedidos', OrderController::class)
+            ->parameters(['pedidos' => 'order'])
+            ->names('orders')
+            ->except(['index', 'show']);
+        Route::post('pedidos/{order}/cancelar', CancelOrderController::class)->name('orders.cancel');
+        Route::post('pedidos/{order}/encerrar-saldo-curto', CloseShortOrderController::class)->name('orders.close-short');
     });
+
+    Route::get('pedidos', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('pedidos/{order}', [OrderController::class, 'show'])->name('orders.show');
 
     Route::get('armazens', [WarehouseController::class, 'index'])->name('warehouses.index');
     Route::get('armazens/{warehouse}', [WarehouseController::class, 'show'])->name('warehouses.show');

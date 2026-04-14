@@ -3,6 +3,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 import {
     BookOpen,
     Boxes,
+    ClipboardList,
     FolderGit2,
     LayoutGrid,
     Ruler,
@@ -32,6 +33,7 @@ import { index as unitsIndex } from '@/routes/units';
 import { index as teamsIndex } from '@/routes/teams';
 import { index as warehousesIndex } from '@/routes/warehouses';
 import { index as productsIndex } from '@/routes/products';
+import { index as ordersIndex } from '@/routes/orders';
 import type { NavItem } from '@/types';
 
 const page = usePage<{ auth: { user: { role: string | null } | null } }>();
@@ -42,6 +44,7 @@ const mainNavItems = computed<NavItem[]>(() => {
         { title: 'Painel', href: dashboard(), icon: LayoutGrid },
         { title: 'Armazéns', href: warehousesIndex().url, icon: Warehouse },
         { title: 'Produtos', href: productsIndex().url, icon: Boxes },
+        { title: 'Pedidos', href: ordersIndex().url, icon: ClipboardList },
     ];
 
     if (role.value === 'administrador') {
