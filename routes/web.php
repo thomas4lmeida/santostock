@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Attachments\AttachmentController;
 use App\Http\Controllers\Attachments\AttachmentViewController;
 use App\Http\Controllers\ItemCategories\ItemCategoryController;
 use App\Http\Controllers\Orders\CancelOrderController;
@@ -61,6 +62,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('orders.receipts.store');
     Route::post('recebimentos/{receipt}/corrigir', CorrectReceiptController::class)
         ->name('receipts.correct');
+
+    Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy'])
+        ->name('attachments.destroy');
 
     Route::get('attachments/{attachment}/thumbnail', [AttachmentViewController::class, 'thumbnail'])
         ->name('attachments.thumbnail')
