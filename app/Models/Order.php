@@ -14,16 +14,27 @@ class Order extends Model
 
     protected $casts = [
         'status' => OrderStatus::class,
+        'supplier_id' => 'integer',
+        'product_id' => 'integer',
+        'warehouse_id' => 'integer',
+        'ordered_quantity' => 'integer',
+        'created_by_user_id' => 'integer',
     ];
 
     protected $fillable = [
         'supplier_id',
         'product_id',
+        'warehouse_id',
         'ordered_quantity',
         'status',
         'notes',
         'created_by_user_id',
     ];
+
+    public function warehouse(): BelongsTo
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
 
     public function supplier(): BelongsTo
     {

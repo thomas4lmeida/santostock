@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\Attachments\AttachmentController;
+use App\Http\Controllers\Attachments\AttachmentViewController;
 use App\Http\Controllers\ItemCategories\ItemCategoryController;
 use App\Http\Controllers\Orders\CancelOrderController;
 use App\Http\Controllers\Orders\CloseShortOrderController;
 use App\Http\Controllers\Orders\OrderController;
 use App\Http\Controllers\Products\ProductController;
+use App\Http\Controllers\Receipts\CorrectReceiptController;
+use App\Http\Controllers\Receipts\ReceiptController;
 use App\Http\Controllers\Suppliers\SupplierController;
 use App\Http\Controllers\Teams\TeamController;
 use App\Http\Controllers\Units\UnitController;
@@ -19,7 +23,7 @@ Route::inertia('/', 'Welcome', [
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 
-    Route::middleware('role:administrador')->group(function () {
+    Route::middleware('permission:admin.access')->group(function () {
         Route::resource('suppliers', SupplierController::class);
         Route::resource('item-categories', ItemCategoryController::class)
             ->except(['show'])
@@ -53,6 +57,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('armazens/{warehouse}', [WarehouseController::class, 'show'])->name('warehouses.show');
     Route::get('produtos', [ProductController::class, 'index'])->name('products.index');
     Route::get('produtos/{product}', [ProductController::class, 'show'])->name('products.show');
+
+    Route::get('pedidos/{order}/recebimentos/create', [ReceiptController::class, 'create'])
+        ->name('orders.receipts.create');
+    Route::post('pedidos/{order}/recebimentos', [ReceiptController::class, 'store'])
+        ->name('orders.receipts.store');
+    Route::post('recebimentos/{receipt}/corrigir', CorrectReceiptController::class)
+        ->name('receipts.correct');
+
+    Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy'])
+        ->name('attachments.destroy');
+
+    Route::get('attachments/{attachment}/thumbnail', [AttachmentViewController::class, 'thumbnail'])
+        ->name('attachments.thumbnail')
+        ->withTrashed();
+    Route::get('attachments/{attachment}/original', [AttachmentViewController::class, 'original'])
+        ->name('attachments.original')
+        ->withTrashed();
 });
 
 require __DIR__.'/settings.php';

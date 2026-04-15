@@ -61,16 +61,20 @@ class OrderController extends Controller
         return to_route('orders.index');
     }
 
-    public function show(Order $order): Response
+    public function show(Request $request, Order $order): Response
     {
-        $order->load(['supplier:id,name', 'product:id,name', 'receipts']);
+        $order->load(['supplier:id,name', 'product:id,name', 'receipts.attachments', 'warehouse:id,name']);
         $hasReceipts = $order->receipts->isNotEmpty();
         $order->status_label = $order->status->label();
+        $saldo = $order->ordered_quantity - $order->receipts->sum('quantity');
 
         return Inertia::render('Orders/Show', [
             'order' => $order,
+            'saldo' => $saldo,
             'canCancel' => $order->status->canTransitionTo(OrderStatus::Cancelled) && ! $hasReceipts,
             'canCloseShort' => $order->status->canTransitionTo(OrderStatus::ClosedShort),
+            'canCreateReceipt' => $saldo > 0 && ($request->user()?->can('receipts.create') ?? false),
+            'canCorrectReceipt' => $request->user()?->can('receipts.correct') ?? false,
         ]);
     }
 

@@ -26,6 +26,16 @@ test('terminal states allow no further transitions', function () {
     }
 });
 
+test('canRewindTo allows correction-driven rewinds without polluting forward transitions', function () {
+    expect(OrderStatus::FullyReceived->canRewindTo(OrderStatus::PartiallyReceived))->toBeTrue()
+        ->and(OrderStatus::FullyReceived->canRewindTo(OrderStatus::Open))->toBeTrue()
+        ->and(OrderStatus::PartiallyReceived->canRewindTo(OrderStatus::Open))->toBeTrue()
+        ->and(OrderStatus::ClosedShort->canRewindTo(OrderStatus::PartiallyReceived))->toBeTrue()
+        ->and(OrderStatus::ClosedShort->canRewindTo(OrderStatus::Open))->toBeTrue()
+        ->and(OrderStatus::Cancelled->canRewindTo(OrderStatus::Open))->toBeFalse()
+        ->and(OrderStatus::Open->canRewindTo(OrderStatus::Open))->toBeFalse();
+});
+
 test('labels are returned in pt-BR', function () {
     expect(OrderStatus::Open->label())->toBe('Aberto')
         ->and(OrderStatus::PartiallyReceived->label())->toBe('Recebido parcialmente')
